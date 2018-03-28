@@ -1,0 +1,33 @@
+{
+  "name": "coreshop/payum-mpay24",
+  "type": "library",
+  "description": "mpay24 for Payum",
+  "keywords": [
+    "payment",
+    "mpay24",
+    "ecommerce"
+  ],
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "payum/core": "^1.5",
+    "mpay24/mpay24-php": "^4.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Payum\\Mpay24\\": ""
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
+}
