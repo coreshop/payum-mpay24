@@ -69,11 +69,6 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
 
             $mdxi = new Mpay24Order();
             $mdxi->Order->Tid = $model['tid'];
-            $mdxi->Order->Price = $model['price'];
-            $mdxi->Order->Currency = $model['currency'];
-            $mdxi->Order->URL->Success = $targetUrl;
-            $mdxi->Order->URL->Error = $targetUrl;
-            $mdxi->Order->URL->Confirmation = $notifyToken->getTargetUrl();
 
             if ($model['order']) {
                 $order = ArrayObject::ensureArrayObject($model['order']);
@@ -86,7 +81,7 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
                     $mdxi->Order->TemplateSet->setLanguage($order['language']);
                 }
 
-                if ($order['cssName']) {
+                if ($order['cssName'] && $order['language']) {
                     $mdxi->Order->TemplateSet->setCSSName($order['cssName']);
                 }
 
@@ -131,6 +126,9 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
                         }
                     }
                 }
+
+                $mdxi->Order->Price = $model['price'];
+                $mdxi->Order->Currency = $model['currency'];
 
                 if ($order['customer'] && is_array($order['customer'])) {
                     $customer = ArrayObject::ensureArrayObject($order['customer']);
@@ -177,6 +175,12 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
                     }
                 }
             }
+
+            $mdxi->Order->Price = $model['price'];
+            $mdxi->Order->Currency = $model['currency'];
+            $mdxi->Order->URL->Success = $targetUrl;
+            $mdxi->Order->URL->Error = $targetUrl;
+            $mdxi->Order->URL->Confirmation = $notifyToken->getTargetUrl();
 
             $redirect = $mpay24->paymentPage($mdxi)->getLocation();
 
