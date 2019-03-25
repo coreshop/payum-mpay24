@@ -39,7 +39,9 @@ class Mpay24GatewayFactory extends GatewayFactory
             $config['payum.default_options'] = [
                 'merchantId' => '',
                 'password' => '',
-                'test' => true
+                'test' => true,
+                'paymentType' => '',
+                'brand' => ''
             ];
             $config->defaults($config['payum.default_options']);
             $config['payum.required_options'] = ['merchantId', 'password'];
