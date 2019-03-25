@@ -53,6 +53,8 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         $mpay24 = $this->api->getMpay24Api();
+        $paymentType = $this->api->getPaymentType();
+        $brand = $this->api->getBrand();
 
         $httpRequest = new GetHttpRequest();
         $this->gateway->execute($httpRequest);
@@ -69,6 +71,17 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
 
             $mdxi = new Mpay24Order();
             $mdxi->Order->Tid = $model['tid'];
+
+            // set pre-selected payment type
+            if (!empty($paymentType)) {
+                $mdxi->Order->PaymentTypes->setEnable("true");
+                $mdxi->Order->PaymentTypes->Payment(1)->setType($paymentType);
+
+                // if defined set the brand
+                if (!empty($brand)) {
+                    $mdxi->Order->PaymentTypes->Payment(1)->setBrand($brand);
+                }
+            }
 
             if ($model['order']) {
                 $order = ArrayObject::ensureArrayObject($model['order']);

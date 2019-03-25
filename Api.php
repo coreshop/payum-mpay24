@@ -60,17 +60,29 @@ final class Api
      * @var Mpay24
      */
     private $mpay24Api;
+    /**
+     * @var string
+     */
+    private $paymentType;
+    /**
+     * @var string
+     */
+    private $brand;
 
     /**
      * @param $merchantId
      * @param string $password
      * @param bool $test
+     * @param string $paymentType
+     * @param string $brand
      */
-    public function __construct($merchantId, string $password, bool $test)
+    public function __construct($merchantId, string $password, bool $test, string $paymentType, string $brand)
     {
         $this->merchantId = $merchantId;
         $this->password = $password;
         $this->test = $test;
+        $this->paymentType = $paymentType;
+        $this->brand = $brand;
     }
 
     /**
@@ -83,5 +95,21 @@ final class Api
         }
 
         return $this->mpay24Api;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentType()
+    {
+        return $this->paymentType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
     }
 }
