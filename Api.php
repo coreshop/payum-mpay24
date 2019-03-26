@@ -76,7 +76,7 @@ final class Api
      * @param string $paymentType
      * @param string $brand
      */
-    public function __construct($merchantId, string $password, bool $test, string $paymentType, string $brand)
+    public function __construct($merchantId, string $password, bool $test, string $paymentType = null, string $brand = null)
     {
         $this->merchantId = $merchantId;
         $this->password = $password;
