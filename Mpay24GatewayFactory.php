@@ -52,7 +52,9 @@ class Mpay24GatewayFactory extends GatewayFactory
                 return new Api(
                     $config['merchantId'],
                     $config['password'],
-                    $config['test']
+                    $config['test'],
+                    $config['paymentType'],
+                    $config['brand']
                 );
             };
         }
