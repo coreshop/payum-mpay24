@@ -72,6 +72,18 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
             $mdxi = new Mpay24Order();
             $mdxi->Order->Tid = $model['tid'];
 
+            if ($model['order']) {
+                $order = ArrayObject::ensureArrayObject($model['order']);
+
+                if ($order['language']) {
+                    $mdxi->Order->TemplateSet->setLanguage($order['language']);
+                }
+
+                if ($order['cssName'] && $order['language']) {
+                    $mdxi->Order->TemplateSet->setCSSName($order['cssName']);
+                }
+            }
+
             // set pre-selected payment type
             if (!empty($paymentType)) {
                 $mdxi->Order->PaymentTypes->setEnable("true");
@@ -88,14 +100,6 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
 
                 if ($order['logoStyle']) {
                     $mdxi->Order->setLogoStyle($order['logoStyle']);
-                }
-
-                if ($order['language']) {
-                    $mdxi->Order->TemplateSet->setLanguage($order['language']);
-                }
-
-                if ($order['cssName'] && $order['language']) {
-                    $mdxi->Order->TemplateSet->setCSSName($order['cssName']);
                 }
 
                 if ($order['description']) {
@@ -195,7 +199,8 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
             $mdxi->Order->URL->Error = $targetUrl;
             $mdxi->Order->URL->Confirmation = $notifyToken->getTargetUrl();
 
-            $redirect = $mpay24->paymentPage($mdxi)->getLocation();
+            $result = $mpay24->paymentPage($mdxi);
+            $redirect = $result->getLocation();
 
             throw new HttpRedirect(
                 $redirect
